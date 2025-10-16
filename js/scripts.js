@@ -3,15 +3,7 @@
 /* This is format for a multi-line comment.
 It can span multiple lines. */
 
-let myName='Max';
-document.write(myName);
+alert("Hello world"); // This line shows an alert box with the message "Hello world"
 
-let myAge=45;
-document.write(myAge);
-
-let simpleAddition = 2 + 2;
-document.write(simpleAddition);
-
-let size = 10;
-size = size * 7;
-document.write(size*7);
+let favoriteFood = "Sashimi"; // This line declares a variable named myFavFood and assigns it the value "Sashimi"
+document.write(favoriteFood); // This line writes the value of the variable myFavFood to the HTML document
