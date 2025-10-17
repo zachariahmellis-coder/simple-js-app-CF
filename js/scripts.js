@@ -1,9 +1,9 @@
-// this is the format for a single-line comment
 
-/* This is format for a multi-line comment.
-It can span multiple lines. */
-
-alert("Hello world"); // This line shows an alert box with the message "Hello world"
-
-let favoriteFood = "Sashimi"; // This line declares a variable named myFavFood and assigns it the value "Sashimi"
-document.write(favoriteFood); // This line writes the value of the variable myFavFood to the HTML document
+//array of objects
+let pokemonlist=[{name: 'Bouffalant', height: '5\'\ 03"', types: ['Normal,Thinking']},
+                    {name: 'Yveltal', height: '19\'\ 00"', types: ['Dark, Flying']},
+                    {name: 'Haunter', height: '5\'\ 03"', types: ['Ghost, Poison']},
+                    {name: 'Noctowl', height: '5\'\ 03"', types: ['Normal, Flying']},
+                    {name: 'Solosis', height: '1\'\ 00"', types: ['Psychic, Coding']},
+                    {name: 'Melmetal', height: '8\'\ 02"', types: ['Steel, Sitting Around All Day']},
+];
