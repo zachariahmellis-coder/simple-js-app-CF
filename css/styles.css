@@ -1,0 +1,38 @@
+:root {
+  --darkerGreen: rgba(3, 104, 53, 0.8);
+  --darkerBlue: rgba(0, 43, 122, 0.7);
+  --plumCrazyPurple: rgba(63, 53, 123, 0.7);
+  --lighterPurple: rgba(138, 126, 206, 0.7);
+  --darkTeal: rgba(27, 144, 152, 0.6);
+  --hotPink: rgba(255, 105, 180, 0.3);
+  --primaryFontColor: rgb(247, 243, 243);
+  --autumnSunrise: rgb(234, 196, 125);
+  --midnightBlack: rgb(0, 0, 0);
+  --wickedSourLime: rgba(160, 223, 137, 0.6);
+  --primaryFont: 'Caveat', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+a {
+  color: var(--darkerGreen);
+}
+
+body {
+  font-family: var(--primaryFont);
+  font-weight: bold;
+  font-style: italic;
+  font-size: 18px; /*sets the font size to 22 pixels*/
+  line-height: 1.1; /*sets the line height to 1.1 times the font size*/
+  color: var(--darkerGreen); /*sets the font color to blue*/
+  display: flex; /*uses flexbox layout for the body*/
+  flex-direction: column; /*stacks the body elements vertically*/
+  background-color: var(--midnightBlack);
+}
