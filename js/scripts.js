@@ -1,17 +1,24 @@
 ///option+shift+f to format
 let pokemonRepository = (function () {
-  let pokemonList = [
-    { name: 'Bouffalant', height: 5, types: ['Normal, Thinking'] },
-    { name: 'Yveltal', height: 19, types: ['Dark, Flying'] },
-    { name: 'Haunter', height: 5, types: ['Ghost, Poison'] },
-    { name: 'Noctowl', height: 5, types: ['Normal, Flying'] },
-    { name: 'Solosis', height: 2, types: ['Psychic, Coding'] },
-    { name: 'Melmetal', height: 8, types: ['Steel, Sitting Around All Day'] },
-  ];
+  let pokemonList = [];
+  let apiUrl = 'https://pokeapi.co/api/v2/pokemon/';
 
-  //new function to show details of pokemon
-  function showDetails(pokemon) {
-    console.log(pokemon);
+  /*3b. Used the add() function to add each Pokémon 
+from the results to your pokemonList variable*/
+  function add(pokemon) {
+    if (
+      typeof pokemon === 'object' &&
+      'name' in pokemon &&
+      'detailsUrl' in pokemon
+    ) {
+      pokemonList.push(pokemon);
+    } else {
+      console.log('Pokemon is incorrect');
+    }
+  }
+
+  function getAll() {
+    return pokemonList;
   }
 
   function addListItem(pokemon) {
@@ -20,14 +27,55 @@ let pokemonRepository = (function () {
     let button = document.createElement('button'); //creating button element
     button.innerText = pokemon.name; //setting button text to pokemon name
     button.classList.add('pokemon-button'); //adding class to button
-
-    button.addEventListener('click', function () {
+    button.addEventListener('click', function (event) {
       showDetails(pokemon); //adding event listener to button to show details on click
     });
-
     listItem.appendChild(button); //appending button to li
     pokemonListElement.appendChild(listItem); //appending li to ul
-  } //this is an IIFE
+  }
+
+  /*3a/d. loadList function that return key that uses fetch to GET 
+  the complete list of Pokémon from here: https://pokeapi.co/api/v2/pokemon/*/
+  function loadList() {
+    return fetch(apiUrl)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (json) {
+        json.results.forEach(function (item) {
+          let pokemon = {
+            name: item.name,
+            detailsUrl: item.url,
+          };
+          add(pokemon);
+        });
+      })
+      .catch(function (e) {
+        console.error(e);
+      });
+  }
+
+  function loadDetails(pokemon) {
+    let url = pokemon.detailsUrl;
+    return fetch(url)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (details) {
+        pokemon.imageUrl = details.sprites.front_default;
+        pokemon.height = details.height;
+        pokemon.types = details.types;
+      })
+      .catch(function (e) {
+        console.error(e);
+      });
+  }
+  /*6. edited showDetails function from previous lesson*/
+  function showDetails(pokemon) {
+    loadDetails(pokemon).then(function () {
+      console.log(pokemon);
+    });
+  }
 
   return {
     add: function (pokemon) {
@@ -36,18 +84,26 @@ let pokemonRepository = (function () {
     getAll: function () {
       return pokemonList;
     },
+    loadList: loadList, //6c. function assigned to key with same name
+    loadDetails: loadDetails, //6c. function assigned to key with same name
     addListItem: addListItem,
   };
 })();
 
-//Adding all pokemon to the list
-pokemonRepository.getAll().forEach(function (pokemon) {
+/*4. Called the LoadList() function of pokemonRepository.
+Then, executed getAll from the pokemonRepository*/
+pokemonRepository.loadList().then(function () {
+  pokemonRepository.getAll().forEach(function (pokemon) {
+    console.log(pokemon);
+    pokemonRepository.addListItem(pokemon);
+  });
+});
+
+/*
+/*pokemonRepository.getAll().forEach(function (pokemon) {
   let output = `${pokemon.name} (height: ${
     pokemon.height + ' feet) possess the following specialty(ies):'
   } ${pokemon.types.join(', ') + '.'}`;
   if (pokemon.height > 8) {
     output += ' - Wow, that’s big!';
-  }
-  console.log(pokemon);
-  pokemonRepository.addListItem(pokemon);
-});
+  }*/
