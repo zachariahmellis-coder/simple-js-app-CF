@@ -9,6 +9,25 @@ let pokemonRepository = (function () {
     { name: 'Melmetal', height: 8, types: ['Steel, Sitting Around All Day'] },
   ];
 
+  function showDetails(pokemon) {
+    //adding event listener to button to show details on click with one parameter (pokemon)
+    console.log(pokemon);
+  }
+
+  function addListItem(pokemon) {
+    let pokemonListElement = document.querySelector('.pokemon-list'); //selecting ul element from index.html
+    let listItem = document.createElement('li'); //creating li element
+    let button = document.createElement('button'); //creating button element
+    button.innerText = pokemon.name; //setting button text to pokemon name
+    button.classList.add('pokemon-button'); //adding class to button
+    button.addEventListener('click', function () {
+      showDetails(pokemon); //adding event listener to button to show details on click
+    });
+
+    listItem.appendChild(button); //appending button to li
+    pokemonListElement.appendChild(listItem); //appending li to ul
+  } //this is an IIFE
+
   return {
     add: function (pokemon) {
       pokemonList.push(pokemon);
@@ -16,16 +35,11 @@ let pokemonRepository = (function () {
     getAll: function () {
       return pokemonList;
     },
+    addListItem: addListItem,
   };
-})(); //this is an IIFE
+})();
 
-//updated forEach loop to retrieve array from IIFE
+//Adding all pokemon to the list
 pokemonRepository.getAll().forEach(function (pokemon) {
-  let output = `${pokemon.name} (height: ${
-    pokemon.height + ' feet) possess the following specialty(ies):'
-  } ${pokemon.types.join(', ') + '.'}`;
-  if (pokemon.height > 8) {
-    output += ' - Wow, that’s big!';
-  } //used placeholder text for types ${}
-  document.write(output + '<br>', '<br>');
+  pokemonRepository.addListItem(pokemon);
 });
