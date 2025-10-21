@@ -9,8 +9,8 @@ let pokemonRepository = (function () {
     { name: 'Melmetal', height: 8, types: ['Steel, Sitting Around All Day'] },
   ];
 
+  //new function to show details of pokemon
   function showDetails(pokemon) {
-    //adding event listener to button to show details on click with one parameter (pokemon)
     console.log(pokemon);
   }
 
@@ -20,6 +20,7 @@ let pokemonRepository = (function () {
     let button = document.createElement('button'); //creating button element
     button.innerText = pokemon.name; //setting button text to pokemon name
     button.classList.add('pokemon-button'); //adding class to button
+
     button.addEventListener('click', function () {
       showDetails(pokemon); //adding event listener to button to show details on click
     });
@@ -41,5 +42,12 @@ let pokemonRepository = (function () {
 
 //Adding all pokemon to the list
 pokemonRepository.getAll().forEach(function (pokemon) {
+  let output = `${pokemon.name} (height: ${
+    pokemon.height + ' feet) possess the following specialty(ies):'
+  } ${pokemon.types.join(', ') + '.'}`;
+  if (pokemon.height > 8) {
+    output += ' - Wow, that’s big!';
+  }
+  console.log(pokemon);
   pokemonRepository.addListItem(pokemon);
 });
