@@ -1,10 +1,7 @@
-///option+shift+f to format
 let pokemonRepository = (function () {
   let pokemonList = [];
   let apiUrl = 'https://pokeapi.co/api/v2/pokemon/';
 
-  /*3b. Used the add() function to add each Pokémon 
-from the results to your pokemonList variable*/
   function add(pokemon) {
     if (
       typeof pokemon === 'object' &&
@@ -22,20 +19,22 @@ from the results to your pokemonList variable*/
   }
 
   function addListItem(pokemon) {
-    let pokemonListElement = document.querySelector('.pokemon-list'); //selecting ul element from index.html
-    let listItem = document.createElement('li'); //creating li element
-    let button = document.createElement('button'); //creating button element
-    button.innerText = pokemon.name; //setting button text to pokemon name
-    button.classList.add('pokemon-button'); //adding class to button
-    button.addEventListener('click', function (event) {
-      showDetails(pokemon); //adding event listener to button to show details on click
+    let pokemonListElement = document.querySelector('.pokemon-list');
+    let listItem = document.createElement('li');
+
+    let button = document.createElement('button');
+    button.innerText = pokemon.name;
+    button.classList.add('pokemon-button');
+    button.addEventListener('click', function () {
+      pokemonRepository.loadDetails(pokemon).then(function () {
+        showModal(pokemon);
+      });
     });
-    listItem.appendChild(button); //appending button to li
-    pokemonListElement.appendChild(listItem); //appending li to ul
+
+    listItem.appendChild(button);
+    pokemonListElement.appendChild(listItem);
   }
 
-  /*3a/d. loadList function that return key that uses fetch to GET 
-  the complete list of Pokémon from here: https://pokeapi.co/api/v2/pokemon/*/
   function loadList() {
     return fetch(apiUrl)
       .then(function (response) {
@@ -70,40 +69,172 @@ from the results to your pokemonList variable*/
         console.error(e);
       });
   }
-  /*6. edited showDetails function from previous lesson*/
-  function showDetails(pokemon) {
-    loadDetails(pokemon).then(function () {
-      console.log(pokemon);
+
+  //Creates and shows modal
+  function showModal(pokemon) {
+    let modalContainer = document.querySelector('#modal-container');
+    modalContainer.innerHTML = '';
+
+    //Overlay to click outside to close
+    let overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.addEventListener('click', hideModal);
+
+    //Modal dialog box
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.tabIndex = -1;
+
+    //Close button
+    let closeButtonElement = document.createElement('button');
+    closeButtonElement.classList.add('modal-close');
+    closeButtonElement.innerText = 'Close';
+    closeButtonElement.addEventListener('click', hideModal);
+
+    //Pokemon name
+    let titleElement = document.createElement('h1');
+    titleElement.id = 'modal-title';
+    titleElement.innerText = pokemon.name;
+
+    //Pokemon image
+    let imageElement = document.createElement('img');
+    imageElement.className = 'modal-image';
+    imageElement.src = pokemon.imageUrl;
+    imageElement.alt = pokemon.name;
+
+    //Pokemon height
+    let heightElement = document.createElement('p');
+    heightElement.innerHTML = pokemon.height + ' feet';
+
+    modal.appendChild(closeButtonElement);
+    modal.appendChild(titleElement);
+    modal.appendChild(imageElement);
+    modal.appendChild(heightElement);
+
+    modalContainer.appendChild(overlay);
+    modalContainer.appendChild(modal);
+
+    modalContainer.classList.add('is-visible');
+
+    //Closes modal when clicking outside modal content
+    modalContainer.addEventListener('click', (e) => {
+      if (e.target === modalContainer) {
+        hideModal();
+      }
+    });
+  }
+  //Closes modal
+  function hideModal() {
+    let modalContainer = document.querySelector('#modal-container');
+    modalContainer.classList.remove('is-visible');
+  }
+
+  //Closes modal with button
+  let closeButtonElement = document.createElement('button');
+  closeButtonElement.classList.add('modal-class');
+  closeButtonElement.innerText = 'Close';
+  closeButtonElement.addEventListener('click', hideModal);
+
+  //Closes modal on Escape key
+  window.addEventListener('keydown', (e) => {
+    let modalContainer = document.querySelector('#modal-container');
+    if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')) {
+      hideModal();
+    }
+  });
+
+  //Closes modal when clicking outside modal content
+  document.querySelector('#modal-container').addEventListener('click', (e) => {
+    let modalContainer = document.querySelector('#modal-container');
+    if (e.target === modalContainer) {
+      hideModal();
+    }
+  });
+
+  //Gets the modal container element and cleared the modal content
+  function showDialog(title, text) {
+    let modalContainer = document.querySelector('#modal-container');
+    modalContainer.innerHTML = '';
+
+    //Creates the modal box
+    let modal = document.createElement('div');
+    modal.classList.add('modal');
+
+    //Creates and adds title to header
+    let titleElement = document.createElement('h1');
+    titleElement.innerText = title;
+
+    //Creates and adds main content in paragraphs
+    let contentElement = document.createElement('p');
+    contentElement.innerText = text;
+
+    //Creates 'confirm' button
+    let confirmButton = document.createElement('button');
+    confirmButton.classList.add('modal-confirm');
+    confirmButton.innerText = 'Confirm';
+
+    //Creates 'cancel' button
+    let cancelButton = document.createElement('button');
+    cancelButton.classList.add('modal-cancel');
+    cancelButton.innerText = 'Cancel';
+
+    //Adds all elements to the modal box
+    modal.appendChild(titleElement);
+    modal.appendChild(contentElement);
+    modal.appendChild(confirmButton);
+    modal.appendChild(cancelButton);
+
+    //Adds all the modal box to the container and makes it visible
+    modalContainer.appendChild(modal);
+    modalContainer.classList.add('is-visible');
+
+    //Automatically focuses the confirm button for accessibility
+    confirmButton.focus();
+
+    //Returns a Promise that resolves on click-confirm & rejects clicks-cancel
+    return new Promise((resolve, reject) => {
+      cancelButton.addEventListener('click', () => {
+        hideModal();
+        reject();
+      });
+      confirmButton.addEventListener('click', () => {
+        hideModal();
+        resolve();
+      });
     });
   }
 
+  //Event listener for dialog trigger button
+  //Detects on'Show dialog' button-click in HTML
+  //Opens the dialog & reacts based on the viewer’s choice
+  if (document.querySelector('#show-dialog')) {
+    document.querySelector('#show-dialog').addEventListener('click', () => {
+      showDialog('Confirm action', 'Are you sure you want to do this?').then(
+        function () {
+          alert('confirmed!');
+        },
+        function () {
+          alert('not confirmed');
+        }
+      );
+    });
+  }
+
+  //Returns a public function only for what is stated
   return {
-    add: function (pokemon) {
-      pokemonList.push(pokemon);
-    },
-    getAll: function () {
-      return pokemonList;
-    },
-    loadList: loadList, //6c. function assigned to key with same name
-    loadDetails: loadDetails, //6c. function assigned to key with same name
+    add: add,
+    getAll: getAll,
+    loadList: loadList,
+    loadDetails: loadDetails,
     addListItem: addListItem,
   };
 })();
 
-/*4. Called the LoadList() function of pokemonRepository.
-Then, executed getAll from the pokemonRepository*/
 pokemonRepository.loadList().then(function () {
   pokemonRepository.getAll().forEach(function (pokemon) {
     console.log(pokemon);
     pokemonRepository.addListItem(pokemon);
   });
 });
-
-/*
-/*pokemonRepository.getAll().forEach(function (pokemon) {
-  let output = `${pokemon.name} (height: ${
-    pokemon.height + ' feet) possess the following specialty(ies):'
-  } ${pokemon.types.join(', ') + '.'}`;
-  if (pokemon.height > 8) {
-    output += ' - Wow, that’s big!';
-  }*/

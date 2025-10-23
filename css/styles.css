@@ -10,6 +10,7 @@
   --midnightBlack: rgb(0, 0, 0);
   --wickedSourLime: rgba(160, 223, 137, 0.6);
   --primaryFont: 'Caveat', sans-serif;
+  --lightMint: rgb(183, 239, 228);
 }
 
 * {
@@ -29,9 +30,9 @@ body {
   font-family: var(--primaryFont);
   font-weight: bold;
   font-style: italic;
-  font-size: 18px; /*sets the font size to 22 pixels*/
+  font-size: 18px; /*sets the font size to 18 pixels*/
   line-height: 1.1; /*sets the line height to 1.1 times the font size*/
-  color: var(--darkerGreen); /*sets the font color to blue*/
+  color: var(--darkerGreen); /*sets the font color to dark green*/
   display: flex; /*uses flexbox layout for the body*/
   flex-direction: column; /*stacks the body elements vertically*/
   background-color: var(--midnightBlack);
@@ -54,8 +55,71 @@ body {
 
 /*Remove default list styling and center the list*/
 .pokemon-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: center;
+  list-style: none; /*removes bullets*/
+  padding: 0; /*removes extra padding*/
+  margin: 0; /*resets default*/
+  text-align: center; /*horizontally centers Pokemon buttons*/
+}
+
+#modal-container {
+  display: none;
+  position: fixed;
+  inset: 0; /*shortcut for top:0; right:0; bottom:0; left:0 */
+  align-items: center;
+  justify-content: center;
+  background: var(--midnightBlack);
+  z-index: 1000; /*keeps modal above other content */
+}
+
+#modal-container.is-visible {
+  display: flex; /*centers modal*/
+}
+
+.modal {
+  position: relative;
+  background: var(--lightMint);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  width: auto; /*responsive width*/
+  max-height: auto;
+  overflow: auto; /*enables scrolling for tall content*/
+  display: flex;
+  flex-direction: column;
+  align-items: center; /*vertically stacks content*/
+  text-align: center; /*centers content*/
+  box-shadow: 0 20px 60px var(--hotPink);
+  gap: 5px; /*spacing between children*/
+}
+
+.modal-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  appearance: none; /*removes default browser styles*/
+  -webkit-appearance: none;
+  border: 0;
+  background: none;
+  color: #252222;
+  text-decoration: underline;
+  cursor: pointer; /*hand cursor*/
+}
+
+.modal h1 {
+  margin: 6px 0 8px;
+  text-transform: capitalize; /*caps Pokemon names*/
+}
+
+.modal p {
+  margin: 4px 0;
+}
+
+.modal-image {
+  display: block;
+  margin: 8px auto 10px; /*center img horizontally*/
+  max-width: 100%; /*prevents overflow*/
+  width: 60%; /*scales width*/
+  height: auto; /*auto-fits height*/
+  aspect-ratio: 1 / 1; /*prevents layout shift while loading*/
+  object-fit: contain; /*ensures img fits into box*/
 }
