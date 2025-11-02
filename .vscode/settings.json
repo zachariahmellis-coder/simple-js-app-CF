@@ -1,0 +1,21 @@
+{
+  // Use Prettier as the default formatter
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // Auto-format and fix on save
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // Tell ESLint to validate JS files
+  "eslint.validate": ["javascript"],
+
+  // Optional: tighten up formatting visuals
+  "[javascript]": {
+    "editor.formatOnSave": true
+  },
+
+  // Prevent VS Code from overwriting with workspace settings elsewhere
+  "eslint.workingDirectories": [{ "mode": "auto" }]
+}

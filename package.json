@@ -1,0 +1,22 @@
+{
+  "name": "simple-js-app",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "scripts": {
+    "lint": "eslint js/scripts.js",
+    "lint:fix": "eslint . --fix",
+    "build:js": "terser js/scripts.js -o dist/app.min.js --compress --mangle",
+    "build:css": "postcss css/styles.css -o dist/styles.min.css --use cssnano",
+    "build": "npm run build:js && npm run build:css"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.0",
+    "cssnano": "^6.1.2",
+    "eslint": "^9.39.0",
+    "eslint-config-prettier": "^9.1.2",
+    "globals": "^16.5.0",
+    "postcss": "^8.5.6",
+    "prettier": "^3.6.2",
+    "terser": "^5.44.0"
+  }
+}

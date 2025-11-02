@@ -1,0 +1,10 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "extends": ["eslint:recommended", "prettier"],
+  "rules": {
+    // put logic/quality rules here only (no formatting rules)
+  }
+}

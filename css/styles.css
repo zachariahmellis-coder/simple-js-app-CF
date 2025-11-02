@@ -1,0 +1,116 @@
+:root {
+  --brand: #796eb5;
+  --brand-dark: #453b8a;
+  --brand-contrast: #ecff44;
+  --text-color: #222;
+  --muted: #5d6a75;
+  --mint: rgb(203, 255, 239);
+  --surface: #ffffff;
+  --surface-alt: #f8f9fa;
+  --background: rgb(238, 16, 168);
+  --pageBackground: #454444;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  background-color: var(--pageBackground);
+}
+
+/* Use a real font stack instead of a color token */
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+    'Apple Color Emoji', 'Segoe UI Emoji';
+  font-weight: 600;
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.3;
+  color: var(--muted);
+  background-color: var(--pageBackground);
+}
+
+/* Push content below fixed navbar */
+.main-container {
+  padding-top: 72px; /* ~height of navbar */
+}
+
+/* Navbar */
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+.navbar-light .navbar-toggler {
+  border-color: rgba(255, 231, 15, 0.75);
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--brand);
+  border-color: var(--brand);
+  color: var(--brand-contrast);
+  font-size: 16px;
+  /* fix: valid box-shadow value */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--brand-dark);
+  border-color: var(--brand-dark);
+  color: var(--brand-contrast);
+}
+
+/* Pokémon list – real flex layout with wrapping + spacing */
+.pokemon-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 1.5rem;
+  display: flex; /* enable flex */
+  flex-wrap: wrap; /* allow wrapping */
+  justify-content: center; /* center rows */
+  gap: 0.5rem; /* space between items */
+}
+
+.pokemon-list .list-group-item {
+  padding: 0.5rem;
+  background: var(--brand-dark);
+  border-color: var(--mint);
+  /* Make each button “tile” look nicer */
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 10px var(--text-color);
+}
+
+/* Truncate long names gracefully */
+.pokemon-list .btn {
+  text-transform: capitalize;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* Modal */
+#pokemonModal .modal-content {
+  background: var(--mint);
+  color: var(--text-color);
+  box-shadow: 0 12px 40px var(--background);
+  border: none;
+  border-radius: 16px;
+  text-align: center;
+}
+#pokemonModal .modal-title {
+  text-transform: capitalize;
+}
+#pokemonModalImage {
+  max-height: 220px;
+  max-width: 220px;
+  object-fit: contain;
+}
+
+/* Headings */
+h1,
+.display-4 {
+  color: var(--mint);
+}
